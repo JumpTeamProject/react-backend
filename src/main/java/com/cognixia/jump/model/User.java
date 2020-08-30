@@ -1,10 +1,10 @@
 package com.cognixia.jump.model;
 
-import java.io.Serializable;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.io.Serializable;
 
 
 @Document(collection = "users")
@@ -46,9 +46,9 @@ public class User implements Serializable {
     public Long getId() {
         return id;
     }
-    
+
     public void setId(Long id) {
-    	this.id = id;
+        this.id = id;
     }
 
     public String getEmail() {

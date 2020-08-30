@@ -1,6 +1,5 @@
 package com.cognixia.jump;
 
-import com.cognixia.jump.repository.UserRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
