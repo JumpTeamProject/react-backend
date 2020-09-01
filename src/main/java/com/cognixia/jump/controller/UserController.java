@@ -1,12 +1,15 @@
 package com.cognixia.jump.controller;
 
+import com.cognixia.jump.exception.ResourceNotFoundException;
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RequestMapping("/api")
@@ -69,5 +72,38 @@ public class UserController {
         } else {
             return "Could not update student, the id = " + updateUser.getId() + " doesn't exist";
         }
+    }
+
+    @PatchMapping("/patch/user/email")
+
+    public ResponseEntity<User> patchUserEmail(@RequestBody Map<String, String> userEmail) throws ResourceNotFoundException {
+        Long id = Long.parseLong(userEmail.get("id"));
+        String newEmail = userEmail.get("email");
+        Optional<User> user = service.findById(id);
+
+        if(user.isEmpty()) {
+            throw new ResourceNotFoundException("User with id= " + id + " is not found");
+        }
+
+        User updated = user.get();
+        updated.setEmail(newEmail);
+        service.save(updated);
+        return new ResponseEntity<>(updated, HttpStatus.ACCEPTED);
+    }
+
+    @PatchMapping("/patch/user/password")
+    public ResponseEntity<User> patchUserPassword(@RequestBody Map<String, String> userPassword) throws ResourceNotFoundException {
+        Long id = Long.parseLong(userPassword.get("id"));
+        String newPassword = userPassword.get("password");
+        Optional<User> user = service.findById(id);
+
+        if(user.isEmpty()) {
+            throw new ResourceNotFoundException("User with id= " + id + " is not found");
+        }
+
+        User updated = user.get();
+        updated.setEmail(newPassword);
+        service.save(updated);
+        return new ResponseEntity<>(updated, HttpStatus.ACCEPTED);
     }
 }
