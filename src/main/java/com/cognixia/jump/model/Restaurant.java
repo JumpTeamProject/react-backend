@@ -31,24 +31,32 @@ public class Restaurant implements Serializable {
 
 	@Pattern(regexp = "^\\(\\d{3}\\)\\s?\\d{3}-\\d{4}$")
 	private String phoneNumber;
+	
+	private String description;
+	
 	@NotNull
 	private Long addressId;
 	
 	public Restaurant() {
-		this("N/A", "N/A", "N/A", "N/A", "N/A", -1L);
+		this(-1L, "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", -1L);
 	}
 
-	public Restaurant(@NotNull(message = "Restaurant name must not be null") String name, String imageUrl,
-			String menuLink, String owner, @Pattern(regexp = "^\\(\\d{3}\\)\\s?\\d{3}-\\d{4}$") String phoneNumber,
-			Long addressId) {
+	public Restaurant(@NotNull Long id, @NotNull(message = "Restaurant name must not be null") String name,
+			String imageUrl, String menuLink, @NotNull String owner,
+			@Pattern(regexp = "^\\(\\d{3}\\)\\s?\\d{3}-\\d{4}$") String phoneNumber, String description,
+			@NotNull Long addressId) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.imageUrl = imageUrl;
 		this.menuLink = menuLink;
 		this.owner = owner;
 		this.phoneNumber = phoneNumber;
+		this.description = description;
 		this.addressId = addressId;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -98,6 +106,14 @@ public class Restaurant implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public Long getAddressId() {
 		return addressId;
 	}
@@ -109,7 +125,8 @@ public class Restaurant implements Serializable {
 	@Override
 	public String toString() {
 		return "Restaurant [id=" + id + ", name=" + name + ", imageUrl=" + imageUrl + ", menuLink=" + menuLink
-				+ ", owner=" + owner + ", phoneNumber=" + phoneNumber + ", addresses=" + addressId + "]";
+				+ ", owner=" + owner + ", phoneNumber=" + phoneNumber + ", description=" + description + ", addressId="
+				+ addressId + "]";
 	}
 
 }

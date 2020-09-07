@@ -74,8 +74,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/").permitAll()
                 .anyRequest().authenticated()
-				.and().formLogin().permitAll()
-				.and().httpBasic()
+				.and()
+				.formLogin().permitAll()
+				.loginPage("/").permitAll()
 				.and().logout().permitAll();
     }
 }
