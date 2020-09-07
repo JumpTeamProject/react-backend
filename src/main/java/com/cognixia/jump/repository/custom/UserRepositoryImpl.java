@@ -1,6 +1,5 @@
 package com.cognixia.jump.repository.custom;
 
-import com.cognixia.jump.model.Restaurant;
 import com.cognixia.jump.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;

@@ -12,11 +12,22 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * The custom user details service. 
+ * @author David Morales
+ * @version v1 (08/24/2020)
+ */
 @Service
 public class MyUserDetailService implements UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
+    /**
+     * Loads the user by their user name.
+     * @author David Morales
+     * @param userName the user name to search for
+     * @return UserDetails - the user details based on the user name
+     */
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         Optional<User> userFound = userRepository.findByEmail(userName);

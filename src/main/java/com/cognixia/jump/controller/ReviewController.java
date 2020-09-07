@@ -2,6 +2,8 @@ package com.cognixia.jump.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,7 +66,7 @@ public class ReviewController {
    		+ "Author(s): Lori White\n"
    		+ "Execption(s): ResourceAlreadyExistsException is thrown when the id or the restaurant id and the user id does match an existing review in the database",
    	response = ResponseEntity.class, produces = "application/json")
-    public ResponseEntity<Review> addReview(@RequestBody Review newReview) throws ResourceAlreadyExistsException {
+    public ResponseEntity<Review> addReview(@Valid @RequestBody Review newReview) throws ResourceAlreadyExistsException {
 		if(service.existsById(newReview.getId())) {
 			throw new ResourceAlreadyExistsException("The review with id= " + newReview.getId() + " already exists.");
 		}

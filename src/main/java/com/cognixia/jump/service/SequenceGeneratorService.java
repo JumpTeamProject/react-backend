@@ -13,17 +13,31 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.cognixia.jump.model.DatabaseSequence;
 
+/**
+ * The sequence generator service. 
+ * @author Lori White
+ * @version v1 (08/24/2020)
+ */
 @Service
 public class SequenceGeneratorService {
 
 
     private MongoOperations mongoOperations;
-
+    /**
+     * The overloaded constructor.
+     * @author Lori White
+     * @param mongoOperations the object holding the mongo template bean
+     */
     @Autowired
     public SequenceGeneratorService(MongoOperations mongoOperations) {
         this.mongoOperations = mongoOperations;
     }
-
+    /**
+     * Auto generates the sequence to be used for each id in the database.
+     * @author Lori White
+     * @param seqName the name of sequence that pertains to a document
+     * @return long - the current sequence value
+     */
     public long generateSequence(String seqName) {
 
         DatabaseSequence counter = mongoOperations.findAndModify(query(where("_id").is(seqName)),

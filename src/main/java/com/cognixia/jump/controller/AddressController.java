@@ -2,6 +2,8 @@ package com.cognixia.jump.controller;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -87,7 +89,7 @@ public class AddressController {
    		+ "Author(s): Lori White\n"
    		+ "Execption(s): ResourceAlreadyExistsException is thrown when the id or the street and  the zip does match an existing address in the database",
    	response = ResponseEntity.class, produces = "application/json")
-	public ResponseEntity<Address> addAddress(@RequestBody Address newAddress) throws ResourceAlreadyExistsException {
+	public ResponseEntity<Address> addAddress(@Valid @RequestBody Address newAddress) throws ResourceAlreadyExistsException {
 		if(service.existsById(newAddress.getId())) {
 			throw new ResourceAlreadyExistsException("Address with id= " + newAddress.getId() + " already exists.");
 		}
