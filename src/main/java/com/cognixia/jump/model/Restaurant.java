@@ -9,11 +9,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-/**
- * The model for Restaurants.
- * @author Darreal Chambers and Lori White
- * @version v2 (09/05/2020)
- */
 @Document(collection = "restaurants")
 public class Restaurant implements Serializable {
 
@@ -31,42 +26,37 @@ public class Restaurant implements Serializable {
 	private String imageUrl;
 
 	private String menuLink;
-	@NotNull(message = "Restaurant owner must not be null")
+	@NotNull
 	private String owner;
 
 	@Pattern(regexp = "^\\(\\d{3}\\)\\s?\\d{3}-\\d{4}$")
 	private String phoneNumber;
-	@NotNull(message = "Restaurant address id must not be null")
+	
+	private String description;
+	
+	@NotNull
 	private Long addressId;
 	
-	/**
-	 * The default constructor.
-	 * @author Darreal Chambers and Lori White
-	 */
 	public Restaurant() {
-		this("N/A", "N/A", "N/A", "N/A", "N/A", -1L);
+		this(-1L, "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", -1L);
 	}
-	/**
-	 * The overloaded constructor.
-	 * @author Darreal Chambers and Lori White
-	 * @param name
-	 * @param imageUrl
-	 * @param menuLink
-	 * @param owner
-	 * @param phoneNumber
-	 * @param addressId
-	 */
-	public Restaurant(@NotNull(message = "Restaurant name must not be null") String name, String imageUrl,
-			String menuLink, @NotNull(message = "Restaurant owner must not be null") String owner, @Pattern(regexp = "^\\(\\d{3}\\)\\s?\\d{3}-\\d{4}$") String phoneNumber,
-			@NotNull(message = "Restaurant address id must not be null") Long addressId) {
+
+	public Restaurant(@NotNull Long id, @NotNull(message = "Restaurant name must not be null") String name,
+			String imageUrl, String menuLink, @NotNull String owner,
+			@Pattern(regexp = "^\\(\\d{3}\\)\\s?\\d{3}-\\d{4}$") String phoneNumber, String description,
+			@NotNull Long addressId) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.imageUrl = imageUrl;
 		this.menuLink = menuLink;
 		this.owner = owner;
 		this.phoneNumber = phoneNumber;
+		this.description = description;
 		this.addressId = addressId;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -116,6 +106,14 @@ public class Restaurant implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public Long getAddressId() {
 		return addressId;
 	}
@@ -127,6 +125,8 @@ public class Restaurant implements Serializable {
 	@Override
 	public String toString() {
 		return "Restaurant [id=" + id + ", name=" + name + ", imageUrl=" + imageUrl + ", menuLink=" + menuLink
-				+ ", owner=" + owner + ", phoneNumber=" + phoneNumber + ", addresses=" + addressId + "]";
+				+ ", owner=" + owner + ", phoneNumber=" + phoneNumber + ", description=" + description + ", addressId="
+				+ addressId + "]";
 	}
+
 }
