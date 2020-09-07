@@ -1,6 +1,7 @@
 package com.cognixia.jump.controller;
 import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
 
+import com.cognixia.jump.exception.InvalidLoginPageException;
 import com.cognixia.jump.exception.ResourceAlreadyExistsException;
 import com.cognixia.jump.exception.ResourceNotFoundException;
 import com.cognixia.jump.model.User;
@@ -50,6 +51,34 @@ public class UserController {
         return new User();
     }
 
+	/**
+	 * Checks if the user entered the correct values to login.
+	 * @author Lori White
+	 * @param email the user's email to search for
+	 * @param password the user's password to compare
+	 * @return User - a valid user
+	 * @throws InvalidLoginException is thrown when the password does not match the existing user's password in the database
+	 * @throws ResourceNotFoundException is thrown when the email does not match an existing user in the database
+	 */
+    @ApiOperation( value = "",
+            notes = "Checks if the user entered the correct values to login.\n"
+                    + "Usage: provide an email and password to validate if a user is in the database\n"
+                    + "Author(s): Lori White\n"
+                    + "Execption(s): InvalidLoginException is thrown when the password does not match the existing user's password in the database and ResourceNotFoundException is thrown when the email does not match an existing user in the database",
+            response = User.class, produces = "application/json")
+	@GetMapping("/users/login/username/{email}/password/{password}")
+	public User validLogin(@PathVariable String email, @PathVariable String password) throws InvalidLoginPageException, ResourceNotFoundException {
+		if(!service.existsByEmail(email)) {
+			throw new ResourceNotFoundException("Email is Invalid!");
+		} 
+		
+		User user = service.findByEmail(email).get();
+		if(!user.getPassword().equals(password)) {
+			throw new InvalidLoginPageException("Password is Invalid!");
+		} 
+		return user;
+	}
+    
     @DeleteMapping("/delete/user/{id}")
     @ApiOperation( value = "",
             notes = "Deletes a user from the database.\n"
