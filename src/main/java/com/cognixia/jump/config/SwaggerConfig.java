@@ -1,15 +1,14 @@
 package com.cognixia.jump.config;
 
-//import static com.google.common.collect.Lists.newArrayList;
-import java.util.Collections;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 //import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 //import springfox.documentation.builders.ResponseMessageBuilder;
@@ -31,10 +30,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @author Lori White
  * @version v1 (08/29/2020)
  */
+//@SuppressWarnings("deprecation")
 @Configuration
 @EnableSwagger2
-@Import(BeanValidatorPluginsConfiguration.class)
-public class SwaggerConfig {
+@EnableWebMvc
+public class SwaggerConfig extends WebMvcConfigurerAdapter {
 	/**
 	 * Selects all APIs that have the class annotation RestController and includes the API's info.
 	 * @author Lori White
@@ -47,7 +47,7 @@ public class SwaggerConfig {
 				.apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
 				.paths(PathSelectors.any())
 				.build()
-				.apiInfo( apiDetails() )
+				.apiInfo( getApiInfo() )
 		/*
 		 * .useDefaultResponseMessages(false) .globalResponseMessage(RequestMethod.GET,
 		 * newArrayList( new ResponseMessageBuilder() .code(500) .message("500 message")
@@ -60,18 +60,23 @@ public class SwaggerConfig {
 	 * @author Lori White
 	 * @return AppInfo - the Restaurant Reviews API's base info 
 	 */
-	private ApiInfo apiDetails() {
-		
-		return new ApiInfo(
-				"Restaurant Reviews API", 
-				"API for a database with Restaurants, Reviews, Users, and Addresses.", 
-				"1.0", 
-				"http://localhost:8080", 
-				new Contact("Project Team", "http://localhost:8080/login", 
-						""), 
-				"API License", 
-				"https://github.com/JumpTeamProject", 
-				Collections.emptyList());
+	private ApiInfo getApiInfo() {
+		return new ApiInfoBuilder()
+        .title("Restaurant Reviews API")
+        .description("API for a database with Restaurants, Reviews, Users, and Addresses.")
+        .version("0.0.1")
+        .contact(new Contact("Project Team", "http://localhost:3000/", "http://localhost:8080/"))
+        .license("API License")
+        .licenseUrl("https://github.com/JumpTeamProject")
+        .build();
 	}
 
+	@Override
+	   public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	       registry.addResourceHandler("swagger-ui.html")
+	       .addResourceLocations("classpath:/META-INF/resources/");
+
+	       registry.addResourceHandler("/webjars/**")
+	       .addResourceLocations("classpath:/META-INF/resources/webjars/");
+	   }
 }
